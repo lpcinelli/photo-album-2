@@ -1,0 +1,55 @@
+﻿<Window x:Class="Album_Photo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:myAlbum="clr-namespace:Album_Photo"
+        mc:Ignorable="d" 
+        Title="MainWindow" 
+        MinHeight="250"
+        MinWidth="350">
+        <!--MaxHeight="750"
+        MaxWidth="1050">-->
+
+    <Window.DataContext>      
+        <myAlbum:AlbumPhoto> </myAlbum:AlbumPhoto>
+    </Window.DataContext>   
+
+    <Window.Background>
+        <ImageBrush ImageSource="Images\brown-antique-paper.jpg" Stretch="UniformToFill"/>
+    </Window.Background>
+
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" >
+
+            <MenuItem Header="_File" IsEnabled="True">
+                <MenuItem Header="_New" x:Name="NewAlbum" Click="NewAlbum_Click"/>
+                <MenuItem Header="_Open"  x:Name="OpenAlbum" Click="OpenAlbum_Click"/>
+                <MenuItem Header="_Save" x:Name="SaveAlbum" Click="SaveAlbum_Click"/>
+            </MenuItem>
+           <MenuItem Header="_Page" x:Name="PageButton" IsEnabled="False">
+                <MenuItem Header="_New" DockPanel.Dock="Left" >
+                    <MenuItem Header="Model1" x:Name="NewPageModel1" Click="NewPageModel1_Click"/>
+                    <MenuItem Header="Model2" x:Name="NewPageModel2" Click="NewPageModel2_Click"/>
+                    <MenuItem Header="Model3" x:Name="NewPageModel3" Click="NewPageModel3_Click"/>
+                    <MenuItem Header="Model4" x:Name="NewPageModel4" Click="NewPageModel4_Click"/>
+                </MenuItem>
+                <MenuItem Header="_Delete" x:Name="DeletePage" Click="DeletePage_Click"/>
+                <Separator/>
+                    <MenuItem Header="Confirm" x:Name="ConfirmPage" Click="ConfirmPage_Click"/>
+
+            </MenuItem>
+            <MenuItem Header="Go Back" x:Name="GoBack" Click="GoBack_Click"/>
+            <MenuItem Header="Go Foward" x:Name="GoForward" Click="GoForward_Click"/>
+
+
+        </Menu>
+            
+        <TextBox AcceptsReturn="True" />
+        
+        <Frame Name="_mainContent" NavigationUIVisibility="Visible" Source="Pages\MainPage.xaml" Margin="0,0,0,0"/>
+
+    </DockPanel>
+</Window>
+     
+  

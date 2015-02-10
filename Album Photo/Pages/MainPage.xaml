@@ -1,0 +1,21 @@
+﻿<Page x:Class="Album_Photo.Pages.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="300"
+	Title="MainPage" Width="442.45">
+
+    <Grid Width="443">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="153*"/>
+            <RowDefinition Height="102*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="41*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock TextWrapping="Wrap" VerticalAlignment="Center" Height="280" Width="423" Margin="0,10,9.667,10" FontSize="100" Text="Album Photo" HorizontalAlignment="Right" FontFamily="Gisha" FontWeight="Bold" IsEnabled="False" TextAlignment="Center" Grid.RowSpan="4"/>
+
+    </Grid>
+</Page>
