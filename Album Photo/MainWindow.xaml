@@ -10,7 +10,7 @@
         MinWidth="350">
         <!--MaxHeight="750"
         MaxWidth="1050">-->
-
+frgt
     <Window.DataContext>      
         <myAlbum:AlbumPhoto> </myAlbum:AlbumPhoto>
     </Window.DataContext>   
