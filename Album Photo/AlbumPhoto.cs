@@ -23,24 +23,22 @@ namespace Album_Photo
         {
             AlbumPages = new LinkedList<Pages.GenericPage>();
             current_pos = null;
-           // N = -1;
+            N = -1;
        
         }
-
-
 
         public int N
         {
             get;
             set;
         }
-        public LinkedList<Pages.GenericPage> AlbumPages
+        private LinkedList<Pages.GenericPage> AlbumPages
         {
             get;
             set;
         }
 
-        private string Name
+        public string Name
         {
             get;
             set;
@@ -64,27 +62,32 @@ namespace Album_Photo
                 AlbumPages.AddFirst(page);
                 current_pos = new LinkedListNode<Pages.GenericPage>(page);
             }
+            N++;
+            Console.WriteLine("page added");
         }
 
         public void DeletePage()
         {
-
-            if (current_pos.Next != null)
+            if (current_pos != null)
             {
-                LinkedListNode<Pages.GenericPage> new_pos = current_pos.Next;
-                AlbumPages.Remove(current_pos);
-                current_pos = new_pos;
-            }
-            else if (current_pos.Previous != null)
-            {
-                LinkedListNode<Pages.GenericPage> new_pos = current_pos.Previous;
-                AlbumPages.Remove(current_pos);
-                current_pos = new_pos;
-            }
-            else
-            {
-                AlbumPages.Remove(current_pos);
-                current_pos = null;
+                if (current_pos.Next != null)
+                {
+                    LinkedListNode<Pages.GenericPage> new_pos = current_pos.Next;
+                    AlbumPages.Remove(current_pos);
+                    current_pos = new_pos;
+                }
+                else if (current_pos.Previous != null)
+                {
+                    LinkedListNode<Pages.GenericPage> new_pos = current_pos.Previous;
+                    AlbumPages.Remove(current_pos);
+                    current_pos = new_pos;
+                }
+                else
+                {
+                    AlbumPages.Remove(current_pos);
+                    current_pos = null;
+                }
+                N--;
             }
         }
 

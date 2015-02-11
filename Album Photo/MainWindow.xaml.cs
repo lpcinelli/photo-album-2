@@ -22,10 +22,10 @@ namespace Album_Photo
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
-            //AlbumPhoto myAlbum = new AlbumPhoto();
         }
 
         static AlbumPhoto DeserializeFromXML(string file)
@@ -51,7 +51,7 @@ namespace Album_Photo
         {
             _mainContent.Navigate(new Pages.Models.PageModel1());
             ((AlbumPhoto)DataContext).N++;
-            PageButton.IsEnabled = true;
+            //PageButton.IsEnabled = true;
         }
 
         private void OpenAlbum_Click(object sender, RoutedEventArgs e)
