@@ -16,7 +16,7 @@ using System.Drawing;
 namespace Album_Photo.Pages
 {
 
-   public class GenericPage : UserControl
+   public class GenericPage : Page
     {   
          public GenericPage()
          {

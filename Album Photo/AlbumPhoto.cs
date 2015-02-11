@@ -23,22 +23,16 @@ namespace Album_Photo
         {
             AlbumPages = new LinkedList<Pages.GenericPage>();
             current_pos = null;
-            N = -1;
+           // N = -1;
        
         }
 
-        public int N
-        {
-            get;
-            set;
-        }
-        private LinkedList<Pages.GenericPage> AlbumPages
-        {
-            get;
-            set;
-        }
+       // public int N { get; set; }
 
-        public string Name
+
+        public int albumSize { get { return AlbumPages.Count; } }
+        
+        private LinkedList<Pages.GenericPage> AlbumPages
         {
             get;
             set;
@@ -59,11 +53,14 @@ namespace Album_Photo
             }
             else
             {
-                AlbumPages.AddFirst(page);
                 current_pos = new LinkedListNode<Pages.GenericPage>(page);
+                AlbumPages.AddFirst(current_pos);
             }
-            N++;
+           // N++;
             Console.WriteLine("page added");
+            Console.WriteLine(AlbumPages.Count);
+            //N = AlbumPages.Count;
+
         }
 
         public void DeletePage()
@@ -87,7 +84,8 @@ namespace Album_Photo
                     AlbumPages.Remove(current_pos);
                     current_pos = null;
                 }
-                N--;
+               // N--;
+                //N = AlbumPages.Count;
             }
         }
 

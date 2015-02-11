@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
 
 namespace Album_Photo
 {
@@ -13,5 +15,20 @@ namespace Album_Photo
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            //this.StartupUri = 
+            // new Uri("pack://application:,,,/Pages/MainPage.xaml");
+        }
+
+
+        void App_Navigated(object sender, NavigationEventArgs e)
+        {
+            Page page = e.Content as Page;
+            if (page != null)
+                ApplicationHelper.NavigationService = page.NavigationService;
+
+        }
     }
 }
