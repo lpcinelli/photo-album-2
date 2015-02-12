@@ -8,18 +8,18 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.IO;
 using System.Xml.Serialization;
+using System.Windows.Data;
 
 namespace Album_Photo
 {
     class ControlClass : INotifyPropertyChanged
     {
-    
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         private AlbumPhoto myAlbum = new AlbumPhoto();
 
-        private Pages.GenericPage currentPage { get; set; }
+        private Pages.GenericPage currentPageAtt;
 
         private ICommand AddPageCommandAtt { get; set; }
 
@@ -43,147 +43,80 @@ namespace Album_Photo
 
         private ICommand SaveAlbumCommandAtt { get; set; }
 
-        public ICommand AddPageCommand 
+        public Pages.GenericPage currentPage
         {
-            get
-            {
-                return AddPageCommandAtt;
-            }
-
+            get { return currentPageAtt; }
             set
             {
-                AddPageCommandAtt = value;
+                currentPageAtt = value;
+                OnPropertyChanged("currentPage");
             }
+        }
+
+        public ICommand AddPageCommand 
+        {
+            get { return AddPageCommandAtt; }
+            set { AddPageCommandAtt = value; }
         }
 
         public ICommand NewPageModel1Command
         {
-            get
-            {
-                return NewPageModel1CommandAtt;
-            }
-
-            set
-            {
-                NewPageModel1CommandAtt = value;
-            }
+            get { return NewPageModel1CommandAtt; }
+            set { NewPageModel1CommandAtt = value; }
         }
 
         public ICommand NewPageModel2Command
         {
-            get
-            {
-                return NewPageModel2CommandAtt;
-            }
-
-            set
-            {
-                NewPageModel2CommandAtt = value;
-            }
+            get { return NewPageModel2CommandAtt; }
+            set { NewPageModel2CommandAtt = value; }
         }
 
         public ICommand NewPageModel3Command
         {
-            get
-            {
-                return NewPageModel3CommandAtt;
-            }
-
-            set
-            {
-                NewPageModel3CommandAtt = value;
-            }
+            get { return NewPageModel3CommandAtt; }
+            set { NewPageModel3CommandAtt = value; }
         }
 
         public ICommand NewPageModel4Command
         {
-            get
-            {
-                return NewPageModel4CommandAtt;
-            }
-
-            set
-            {
-                NewPageModel4CommandAtt = value;
-            }
+            get { return NewPageModel4CommandAtt; }
+            set { NewPageModel4CommandAtt = value; }
         }
 
         public ICommand DeleteCommand
         {
-            get
-            {
-                return DeleteCommandAtt;
-            }
-
-            set
-            {
-                DeleteCommandAtt = value;
-            }
+            get{ return DeleteCommandAtt; }
+            set { DeleteCommandAtt = value; }
         }
 
         public ICommand GoBackCommand
         {
-            get
-            {
-                return GoBackCommandAtt;
-            }
-            set
-            {
-                GoBackCommandAtt = value;
-            }
+            get { return GoBackCommandAtt; }
+            set { GoBackCommandAtt = value; }
         }
 
         public ICommand GoForwardCommand
         {
-            get
-            {
-                return GoForwardCommandAtt;
-            }
-
-            set
-            {
-                GoForwardCommandAtt = value;
-            }
+            get { return GoForwardCommandAtt; }
+            set {  GoForwardCommandAtt = value; }
         }
 
         public ICommand NewAlbumCommand
         {
-            get
-            {
-                return NewAlbumCommandAtt;
-            }
-
-            set
-            {
-                NewAlbumCommandAtt = value;
-            }
+            get { return NewAlbumCommandAtt; }
+            set {  NewAlbumCommandAtt = value; }
         }
 
         public ICommand OpenAlbumCommand
         {
-            get
-            {
-                return OpenAlbumCommandAtt;
-            }
-
-            set
-            {
-                OpenAlbumCommandAtt = value;
-            }
+            get { return OpenAlbumCommandAtt; }
+            set { OpenAlbumCommandAtt = value; }
         }
 
         public ICommand SaveAlbumCommand
         {
-            get
-            {
-                return SaveAlbumCommandAtt;
-                ;
-            }
-
-            set
-            {
-                SaveAlbumCommandAtt = value;
-            }
+            get { return SaveAlbumCommandAtt; }
+            set { SaveAlbumCommandAtt = value; }
         }
 
           public ControlClass()
@@ -197,92 +130,55 @@ namespace Album_Photo
             NewPageModel2Command = new RelayCommand(NewPageModel2, param => true);
             NewPageModel3Command = new RelayCommand(NewPageModel3, param => true);
             NewPageModel4Command = new RelayCommand(NewPageModel4, param => true);
-            DeleteCommand = new RelayCommand(Delete, param => (myAlbum.current_pos != null));
-            GoBackCommand = new RelayCommand(GoBack, param => (myAlbum.current_pos != null && myAlbum.current_pos.Previous != null));
-            GoForwardCommand = new RelayCommand(GoForward, param => (myAlbum.current_pos != null && myAlbum.current_pos.Next != null));
+            DeleteCommand = new RelayCommand(Delete, param => (myAlbum.current_index != -1));
+            GoBackCommand = new RelayCommand(GoBack, param => (myAlbum.current_index != -1 && myAlbum.current_index > 0));
+            GoForwardCommand = new RelayCommand(GoForward, param => (myAlbum.current_index != -1 && myAlbum.current_index < myAlbum.albumSize - 1));
+           
         }
 
 
         private void AddPage(object obj)
         {
-            //change model
             myAlbum.CreerPage(currentPage);
-            currentPage = null;
+            currentPage = myAlbum.GetPageAt(myAlbum.current_index);
         }
 
         private void NewPageModel1(object obj)
         {
             currentPage = new Pages.Models.PageModel1();
-
-            //change UI
-           // ApplicationHelper.NavigationService.Navigate(currentPage);
-            
         }
 
         private void NewPageModel2(object obj)
         {
             currentPage = new Pages.Models.PageModel2();
-            
-            //change UI
-           // ApplicationHelper.NavigationService.Navigate(currentPage);
         }
 
         private void NewPageModel3(object obj)
         {
             currentPage = new Pages.Models.PageModel3();
-
-            //change UI
-            //ApplicationHelper.NavigationService.Navigate(currentPage);
-
         }
 
         private void NewPageModel4(object obj)
         {
             currentPage = new Pages.Models.PageModel4();
-
-            //change UI
-           // ApplicationHelper.NavigationService.Navigate(currentPage);
-
         }
 
         private void Delete(object obj)
         {
-            //change model
             myAlbum.DeletePage();
-            currentPage = null;
-
-            //change UI
-            if (PropertyChanged != null) // Point 2
-            {
-                //PropertyChanged(this, new PropertyChangedEventArgs("Tax"));
-            }
+            currentPage = myAlbum.GetPageAt(myAlbum.current_index);
         }
 
         private void GoForward(object obj)
         {
-            
-            //change model
-            myAlbum.current_pos = myAlbum.current_pos.Next;
-
-            //change UI
-            if (PropertyChanged != null) // Point 2
-            {
-                //  PropertyChanged(this, new PropertyChangedEventArgs("Tax"));
-            }
+            myAlbum.current_index++;
+            currentPage = myAlbum.GetPageAt(myAlbum.current_index);
         }
 
         public void GoBack(object obj)
         {      
-            //change model
-            myAlbum.current_pos = myAlbum.current_pos.Previous;
-
-            //change UI
-            if (PropertyChanged != null) // Point 2
-            {
-                Console.WriteLine("funfou");
-                //  PropertyChanged(this, new PropertyChangedEventArgs("Tax"));
-            }
-
+            myAlbum.current_index--;
+            currentPage = myAlbum.GetPageAt(myAlbum.current_index);
         }
 
         private void OpenAlbum(object obj)
@@ -303,10 +199,16 @@ namespace Album_Photo
             {
                 // Open document
                 myAlbum = DeserializeFromXML(@dlg.FileName);
+                if(myAlbum.albumSize >0)
+                {
+                    //myAlbum.current_pos = myAlbum.AlbumPages.First;
+                    currentPage = myAlbum.GetPageAt(0);
+                    myAlbum.current_index = 0;
+                }
                 
             }
         }
-        
+            
         private void SaveAlbum(object obj)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
@@ -351,9 +253,15 @@ namespace Album_Photo
             textWriter.Close();
         }
 
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
 
     }
 
-   
-    
 }

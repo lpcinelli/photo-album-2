@@ -25,7 +25,7 @@
         <Menu DockPanel.Dock="Top" >
 
             <MenuItem Header="_File" IsEnabled="True">
-                <MenuItem Header="_New"   Command="{Binding NewAlbumCommand}" />
+                <!--<MenuItem Header="_New"   Command="{Binding NewAlbumCommand}" />-->
                 <MenuItem Header="_Open"  Command="{Binding OpenAlbumCommand}"/>
                 <MenuItem Header="_Save"  Command="{Binding SaveAlbumCommand}"/>
             </MenuItem>
@@ -47,7 +47,9 @@
 
         </Menu>
 
-        <Frame NavigationUIVisibility="Hidden" Source="Pages/MainPage.xaml" Margin="0,0,0,0" />
+        <!--<Frame NavigationUIVisibility="Hidden" Source="Pages/MainPage.xaml" Margin="0,0,0,0" Name="{Binding currentPageFrame}"/>-->
+        <!--<Frame Content="{Binding Path=currentPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />-->
+        <Frame Content="{Binding currentPage, UpdateSourceTrigger=PropertyChanged}" NavigationUIVisibility="Hidden" Source="Pages\MainPage.xaml" Margin="0,0,0,0"/>
 
     </StackPanel>
  

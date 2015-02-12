@@ -26,6 +26,7 @@ namespace Album_Photo
         void App_Navigated(object sender, NavigationEventArgs e)
         {
             Page page = e.Content as Page;
+            Console.WriteLine(page);
             if (page != null)
                 ApplicationHelper.NavigationService = page.NavigationService;
 

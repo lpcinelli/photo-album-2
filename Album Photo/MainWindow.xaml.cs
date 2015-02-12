@@ -28,6 +28,7 @@ namespace Album_Photo
             InitializeComponent();
         }
 
+
         //static AlbumPhoto DeserializeFromXML(string file)
         //{
         //    XmlSerializer deserializer = new XmlSerializer(typeof(AlbumPhoto));

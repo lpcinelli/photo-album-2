@@ -12,6 +12,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Runtime.Serialization;
+using System.Xml.Serialization;
 
 namespace Album_Photo
 {
@@ -21,71 +22,67 @@ namespace Album_Photo
 
         public AlbumPhoto()
         {
-            AlbumPages = new LinkedList<Pages.GenericPage>();
-            current_pos = null;
+            AlbumPages = new List<Pages.GenericPage>();
+            //current_pos = null;
            // N = -1;
+            current_index = -1;
        
         }
 
-       // public int N { get; set; }
-
+        public int current_index { get; set; }
 
         public int albumSize { get { return AlbumPages.Count; } }
         
-        private LinkedList<Pages.GenericPage> AlbumPages
+        private List<Pages.GenericPage> AlbumPages
         {
             get;
             set;
         }
 
-        public LinkedListNode<Pages.GenericPage> current_pos
+        //[XmlIgnore]
+        //public LinkedListNode<Pages.GenericPage> current_pos
+        //{
+        //    get;
+        //    set;
+        //}
+
+        public Pages.GenericPage GetPageAt(int i)
         {
-            get;
-            set;
+            if (i < 0 || i >= albumSize)
+                return null;
+
+            else 
+                return AlbumPages.ElementAt(i);
+                
         }
 
         public void CreerPage(Pages.GenericPage page)
         {
-            if (current_pos != null)
+            if (current_index > -1 && current_index != AlbumPages.Count-1)
             {
-                AlbumPages.AddAfter(current_pos, page);
-                current_pos = current_pos.Next;
+                current_index++;
+                AlbumPages.Insert(current_index, page);
             }
             else
             {
-                current_pos = new LinkedListNode<Pages.GenericPage>(page);
-                AlbumPages.AddFirst(current_pos);
+                current_index++;
+                AlbumPages.Add(page);
             }
-           // N++;
-            Console.WriteLine("page added");
-            Console.WriteLine(AlbumPages.Count);
-            //N = AlbumPages.Count;
-
         }
 
         public void DeletePage()
         {
-            if (current_pos != null)
+            if (current_index > -1)
             {
-                if (current_pos.Next != null)
+                if (current_index < AlbumPages.Count-1)
                 {
-                    LinkedListNode<Pages.GenericPage> new_pos = current_pos.Next;
-                    AlbumPages.Remove(current_pos);
-                    current_pos = new_pos;
+                    AlbumPages.RemoveAt(current_index);
                 }
-                else if (current_pos.Previous != null)
+                else 
                 {
-                    LinkedListNode<Pages.GenericPage> new_pos = current_pos.Previous;
-                    AlbumPages.Remove(current_pos);
-                    current_pos = new_pos;
+                    AlbumPages.RemoveAt(current_index);
+                    current_index--;
                 }
-                else
-                {
-                    AlbumPages.Remove(current_pos);
-                    current_pos = null;
-                }
-               // N--;
-                //N = AlbumPages.Count;
             }
         }
 
