@@ -8,25 +8,15 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Drawing;
-//using System.Drawing.Drawing2D;
-//using System.Drawing.Imaging;
-
 
 namespace Album_Photo.Pages
 {
-
+    [Serializable]
    public class GenericPage : Page
     {   
          public GenericPage()
          {
          }
-
-         //protected void ConfirmPage_Click(object sender, RoutedEventArgs e)
-         //{
-         //   Album.CreerPage(this);
-         //   //Console.WriteLine(myAlbum.N);
-         //}   
 
          private static BitmapImage resizeImage(BitmapImage imgToResize, int Width, int Height)
          {

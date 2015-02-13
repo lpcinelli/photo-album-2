@@ -19,41 +19,27 @@ namespace Album_Photo
     [Serializable]
     public class AlbumPhoto 
     {
+        private List<Pages.GenericPage> AlbumPages { get; set; }
 
-        public AlbumPhoto()
-        {
-            AlbumPages = new List<Pages.GenericPage>();
-            //current_pos = null;
-           // N = -1;
-            current_index = -1;
-       
-        }
+        public List<Pages.GenericPage> AlbumPagesProp { get { return AlbumPages; } }
 
         public int current_index { get; set; }
 
         public int albumSize { get { return AlbumPages.Count; } }
-        
-        private List<Pages.GenericPage> AlbumPages
+
+        public AlbumPhoto()
         {
-            get;
-            set;
+            AlbumPages = new List<Pages.GenericPage>();
+            current_index = -1;   
         }
-
-        //[XmlIgnore]
-        //public LinkedListNode<Pages.GenericPage> current_pos
-        //{
-        //    get;
-        //    set;
-        //}
-
+       
         public Pages.GenericPage GetPageAt(int i)
         {
             if (i < 0 || i >= albumSize)
                 return null;
 
             else 
-                return AlbumPages.ElementAt(i);
-                
+                return AlbumPages.ElementAt(i);              
         }
 
         public void CreerPage(Pages.GenericPage page)
@@ -80,13 +66,18 @@ namespace Album_Photo
                 }
                 else 
                 {
+                    //Console.WriteLine("current_index" + current_index + "    albumSize:" + albumSize);
                     AlbumPages.RemoveAt(current_index);
                     current_index--;
                 }
             }
-        }
+        }      
 
-      
+        public void ClearAll()
+        {
+            AlbumPages.Clear();
+            current_index = -1;
+        }
     }
 
 }

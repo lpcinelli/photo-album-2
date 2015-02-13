@@ -25,9 +25,13 @@
         <Menu DockPanel.Dock="Top" >
 
             <MenuItem Header="_File" IsEnabled="True">
-                <!--<MenuItem Header="_New"   Command="{Binding NewAlbumCommand}" />-->
                 <MenuItem Header="_Open"  Command="{Binding OpenAlbumCommand}"/>
                 <MenuItem Header="_Save"  Command="{Binding SaveAlbumCommand}"/>
+                <Separator/>
+                <MenuItem Header="_Clear"  Command="{Binding ClearAlbumCommand}"/>
+                <Separator/>
+                <MenuItem Header="_Create PDF" Command="{Binding PDFCommand}" />
+
             </MenuItem>
            <MenuItem Header="_Page">
                 <MenuItem Header="_New" DockPanel.Dock="Left" >
@@ -36,7 +40,7 @@
                     <MenuItem Header="Model3" Command="{Binding NewPageModel3Command}"/>
                     <MenuItem Header="Model4" Command="{Binding NewPageModel4Command}"/>
                 </MenuItem>
-                <MenuItem Header="_Delete" Command="{Binding DeleteCommand}"/>
+                <MenuItem Header="_Delete" Command="{Binding DeletePageCommand}"/>
                 <Separator/>
                 <MenuItem Header="Confirm" Command="{Binding AddPageCommand}"/>
 

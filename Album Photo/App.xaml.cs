@@ -15,21 +15,5 @@ namespace Album_Photo
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            base.OnStartup(e);
-            //this.StartupUri = 
-            // new Uri("pack://application:,,,/Pages/MainPage.xaml");
-        }
-
-
-        void App_Navigated(object sender, NavigationEventArgs e)
-        {
-            Page page = e.Content as Page;
-            Console.WriteLine(page);
-            if (page != null)
-                ApplicationHelper.NavigationService = page.NavigationService;
-
-        }
     }
 }

@@ -21,6 +21,8 @@ namespace Album_Photo
 
         private Pages.GenericPage currentPageAtt;
 
+        private ICommand PDFCommandAtt { get; set; }
+
         private ICommand AddPageCommandAtt { get; set; }
 
         private ICommand NewPageModel1CommandAtt { get; set; }
@@ -31,17 +33,17 @@ namespace Album_Photo
 
         private ICommand NewPageModel4CommandAtt { get; set; }
 
-        private ICommand DeleteCommandAtt { get; set; }
+        private ICommand DeletePageCommandAtt { get; set; }
 
         private ICommand GoBackCommandAtt { get; set; }
 
         private ICommand GoForwardCommandAtt { get; set; }
 
-        private ICommand NewAlbumCommandAtt { get; set; }
-
         private ICommand OpenAlbumCommandAtt { get; set; }
 
         private ICommand SaveAlbumCommandAtt { get; set; }
+
+        private ICommand ClearAlbumCommandAtt { get; set; }
 
         public Pages.GenericPage currentPage
         {
@@ -51,6 +53,12 @@ namespace Album_Photo
                 currentPageAtt = value;
                 OnPropertyChanged("currentPage");
             }
+        }
+
+        public ICommand PDFCommand
+        {
+            get { return PDFCommandAtt; }
+            set { PDFCommandAtt = value; }
         }
 
         public ICommand AddPageCommand 
@@ -83,10 +91,10 @@ namespace Album_Photo
             set { NewPageModel4CommandAtt = value; }
         }
 
-        public ICommand DeleteCommand
+        public ICommand DeletePageCommand
         {
-            get{ return DeleteCommandAtt; }
-            set { DeleteCommandAtt = value; }
+            get{ return DeletePageCommandAtt; }
+            set { DeletePageCommandAtt = value; }
         }
 
         public ICommand GoBackCommand
@@ -101,12 +109,6 @@ namespace Album_Photo
             set {  GoForwardCommandAtt = value; }
         }
 
-        public ICommand NewAlbumCommand
-        {
-            get { return NewAlbumCommandAtt; }
-            set {  NewAlbumCommandAtt = value; }
-        }
-
         public ICommand OpenAlbumCommand
         {
             get { return OpenAlbumCommandAtt; }
@@ -119,10 +121,17 @@ namespace Album_Photo
             set { SaveAlbumCommandAtt = value; }
         }
 
-          public ControlClass()
+        public ICommand ClearAlbumCommand
+        {
+            get { return ClearAlbumCommandAtt; }
+            set { ClearAlbumCommandAtt = value; }
+        }
+
+        public ControlClass()
         {
             currentPage = null;
-            NewAlbumCommand = new RelayCommand(NewAlbum, param => true);
+            PDFCommand = new RelayCommand(PrintPDF, param => myAlbum.current_index != -1);
+            ClearAlbumCommand = new RelayCommand(ClearAlbum, param => true);
             OpenAlbumCommand = new RelayCommand(OpenAlbum, param => true);
             SaveAlbumCommand = new RelayCommand(SaveAlbum, param => myAlbum != null);
             AddPageCommand = new RelayCommand(AddPage, param => currentPage != null);
@@ -130,12 +139,15 @@ namespace Album_Photo
             NewPageModel2Command = new RelayCommand(NewPageModel2, param => true);
             NewPageModel3Command = new RelayCommand(NewPageModel3, param => true);
             NewPageModel4Command = new RelayCommand(NewPageModel4, param => true);
-            DeleteCommand = new RelayCommand(Delete, param => (myAlbum.current_index != -1));
+            DeletePageCommand = new RelayCommand(DeletePage, param => (myAlbum.current_index != -1));
             GoBackCommand = new RelayCommand(GoBack, param => (myAlbum.current_index != -1 && myAlbum.current_index > 0));
-            GoForwardCommand = new RelayCommand(GoForward, param => (myAlbum.current_index != -1 && myAlbum.current_index < myAlbum.albumSize - 1));
-           
+            GoForwardCommand = new RelayCommand(GoForward, param => (myAlbum.current_index != -1 && myAlbum.current_index < myAlbum.albumSize - 1));         
         }
 
+        private void PrintPDF(object obj)
+        {
+            PDFStuff.CreatePDF(myAlbum);
+        }
 
         private void AddPage(object obj)
         {
@@ -163,7 +175,7 @@ namespace Album_Photo
             currentPage = new Pages.Models.PageModel4();
         }
 
-        private void Delete(object obj)
+        private void DeletePage(object obj)
         {
             myAlbum.DeletePage();
             currentPage = myAlbum.GetPageAt(myAlbum.current_index);
@@ -198,17 +210,25 @@ namespace Album_Photo
             if (result == true)
             {
                 // Open document
-                myAlbum = DeserializeFromXML(@dlg.FileName);
-                if(myAlbum.albumSize >0)
+                try
                 {
-                    //myAlbum.current_pos = myAlbum.AlbumPages.First;
-                    currentPage = myAlbum.GetPageAt(0);
-                    myAlbum.current_index = 0;
+                   myAlbum = SerializeStuff.DeserializeFromXML(@dlg.FileName);
+                    if (myAlbum != null && myAlbum.albumSize > 0)
+                    {
+                        //myAlbum.current_pos = myAlbum.AlbumPages.First;
+                        currentPage = myAlbum.GetPageAt(0);
+                        myAlbum.current_index = 0;
+                    }
+                }
+                catch(Exception e)
+                { 
+                    Console.WriteLine(e);
+                    Console.WriteLine("error trying to open file");
                 }
                 
             }
         }
-            
+    
         private void SaveAlbum(object obj)
         {
             Microsoft.Win32.SaveFileDialog dlg = new Microsoft.Win32.SaveFileDialog();
@@ -223,34 +243,14 @@ namespace Album_Photo
             if (result == true)
             {
                 // Save document
-                SerializeToXML(myAlbum, @dlg.FileName);
+                SerializeStuff.SerializeToXML(myAlbum, @dlg.FileName);
             }
         }
 
-        private void NewAlbum(object obj)
+        private void ClearAlbum(object obj)
         {
-            //_mainContent.Navigate(new Pages.Models.PageModel1());
-           // ((AlbumPhoto)DataContext).N++;
-            //PageButton.IsEnabled = true;
-        }
-
-        static AlbumPhoto DeserializeFromXML(string file)
-        {
-            XmlSerializer deserializer = new XmlSerializer(typeof(AlbumPhoto));
-            TextReader textReader = new StreamReader(@file);
-
-            AlbumPhoto myAlbum = (AlbumPhoto)deserializer.Deserialize(textReader);
-            textReader.Close();
-
-            return myAlbum;
-        }
-
-        static public void SerializeToXML(AlbumPhoto album, string file)
-        {
-            XmlSerializer serializer = new XmlSerializer(typeof(AlbumPhoto));
-            TextWriter textWriter = new StreamWriter(@file);
-            serializer.Serialize(textWriter, album);
-            textWriter.Close();
+            myAlbum.ClearAll();
+            currentPage = null;
         }
 
         protected void OnPropertyChanged(string name)
